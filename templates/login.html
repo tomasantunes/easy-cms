@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>EasyCMS</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome/css/all.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/easy.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/form-style1.css') }}">
+	<style>
+		.login {
+			width: 25%;
+		}
+
+		.table {
+			width: 75%;
+		}
+	</style>
+</head>
+<body>
+	<div class="top-nav" id="top-nav1">
+	  <a href="/login" class="active">Login</a>
+	  <a href="/register">Register</a>
+	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
+	    <i class="fa fa-bars"></i>
+	  </a>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="login">
+				<h2>Login</h2>
+				<label>Username</label>
+				<input id="login-user-input" type="text">
+				<label>Password</label>
+				<input id="login-password-input" type="password">
+				<br>
+				<div class="row" style="text-align: center;">
+					<button id="login-btn">OK</button>
+				</div>
+				<div class="row" style="text-align: center;">
+					<a href="/register">Register</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+
+		</div>
+	</div>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$("#login-btn").click(function() {
+				var username = $("#login-username-input").val();
+				var password = $("#login-password-input").val();
+
+				$.post("/auth", {username: username, password: password})
+				.done(function(data){
+					if (data.status == "OK") {
+						location.reload();
+					}
+					else {
+						alert("Invalid username or password.");
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>
