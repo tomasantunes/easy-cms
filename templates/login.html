@@ -12,6 +12,10 @@
 			width: 25%;
 		}
 
+		.register {
+			width: 25%;
+		}
+
 		.table {
 			width: 75%;
 		}
@@ -28,18 +32,20 @@
 	<div class="container">
 		<div class="row">
 			<div class="login">
-				<h2>Login</h2>
-				<label>Username</label>
-				<input id="login-user-input" type="text">
-				<label>Password</label>
-				<input id="login-password-input" type="password">
-				<br>
-				<div class="row" style="text-align: center;">
-					<button id="login-btn">OK</button>
-				</div>
-				<div class="row" style="text-align: center;">
-					<a href="/register">Register</a>
-				</div>
+				<form action="/auth" method = "post">
+					<h2>Login</h2>
+					<label>Username</label>
+					<input id="login-user-input" type="text" name="username">
+					<label>Password</label>
+					<input id="login-password-input" type="password" name="password">
+					<br>
+					<div class="row" style="text-align: center;">
+						<button type="submit" id="login-btn">OK</button>
+					</div>
+					<div class="row" style="text-align: center;">
+						<a href="/register">Register</a>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -52,22 +58,6 @@
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
 	<script>
-		$(document).ready(function() {
-			$("#login-btn").click(function() {
-				var username = $("#login-username-input").val();
-				var password = $("#login-password-input").val();
-
-				$.post("/auth", {username: username, password: password})
-				.done(function(data){
-					if (data.status == "OK") {
-						location.reload();
-					}
-					else {
-						alert("Invalid username or password.");
-					}
-				});
-			});
-		});
 	</script>
 </body>
 </html>

@@ -12,6 +12,10 @@
 			width: 25%;
 		}
 
+		.register {
+			width: 25%;
+		}
+
 		.table {
 			width: 75%;
 		}
@@ -27,21 +31,23 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="login">
-				<h2>Register</h2>
-				<label>Username</label>
-				<input id="register-user-input" type="text">
-				<label>E-Mail</label>
-				<input id="register-email-input" type="text">
-				<label>Password</label>
-				<input id="register-password-input" type="password">
-				<br>
-				<div class="row" style="text-align: center;">
-					<button id="register-btn">Submit</button>
-				</div>
-				<div class="row" style="text-align: center;">
-					<a href="/admin">Login</a>
-				</div>
+			<div class="register">
+				<form action="/add_user" method="post">
+					<h2>Register</h2>
+					<label>Username</label>
+					<input id="register-user-input" type="text" name="username">
+					<label>E-Mail</label>
+					<input id="register-email-input" type="text" name="email">
+					<label>Password</label>
+					<input id="register-password-input" type="password" name="password">
+					<br>
+					<div class="row" style="text-align: center;">
+						<button type="submit" id="register-btn">Submit</button>
+					</div>
+					<div class="row" style="text-align: center;">
+						<a href="/admin">Login</a>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -54,23 +60,6 @@
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
 	<script>
-		$(document).ready(function() {
-			$("#register-btn").click(function() {
-				var username = $("#register-username-input").val();
-				var email = $("#register-email-input").val();
-				var password = $("#register-password-input").val();
-
-				$.post("/add_user", {username: username, email: email, password: password})
-				.done(function(data){
-					if (data.status == "OK") {
-						location.reload();
-					}
-					else {
-						alert("Error.");
-					}
-				});
-			});
-		});
 	</script>
 </body>
 </html>
