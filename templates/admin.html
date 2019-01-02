@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>EasyCMS</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome/css/all.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/easy.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/form-style1.css') }}">
+	<style>
+		.login {
+			width: 25%;
+		}
+
+		.register {
+			width: 25%;
+		}
+
+		.table {
+			width: 75%;
+		}
+	</style>
+</head>
+<body>
+	<div class="top-nav" id="top-nav1">
+	  <a href="/admin">Login</a>
+	  <a href="/register" class="active">Register</a>
+	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
+	    <i class="fa fa-bars"></i>
+	  </a>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="register">
+				<form action="/add_post" method="post">
+					<h2>Admin</h2>
+					<h5>Username</h5>
+					<p>{{ data.username }}</p>
+					<h5>Title</h5>
+					<input id="title-input" type="text" name="title">
+					<h5>Text</h5>
+					<textarea id="content-input" type="text" name="content" rows="30" cols="30"></textarea>
+					<br>
+					<div class="row" style="text-align: center;">
+						<button type="submit" id="save-btn">Save</button>
+					</div>
+					<div class="row" style="text-align: center;">
+						<a href="/logout">Logout</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+
+		</div>
+	</div>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
+	<script>
+	</script>
+</body>
+</html>

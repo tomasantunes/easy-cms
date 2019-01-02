@@ -22,6 +22,16 @@ def init():
 	db = connect_db()
 	c = db.cursor()
 	c.execute(sql_users_table)
+
+	sql_posts_table = """ CREATE TABLE IF NOT EXISTS posts (
+							id integer PRIMARY KEY,
+							title text,
+							content text,
+							author integer,
+							date date
+						); """
+
+	c.execute(sql_posts_table)
  
 @app.route("/")
 def home():
@@ -30,9 +40,10 @@ def home():
 @app.route("/admin")
 def admin():
 	print(str(session))
-	if 'username' in session:
+	if session.get('logged_in') == True and 'username' in session:
 		username = session['username']
-		return 'Logged in as ' + username + '<br>' + "<b><a href = '/logout'>click here to log out</a></b>"
+		data = {'username': username}
+		return render_template("admin.html", data=data)
 	else:
 		return render_template("login.html")
 
@@ -46,10 +57,6 @@ def add_user():
 	email = request.form.get('email', "")
 	password = request.form.get('password', "")
 
-	print(username)
-	print(email)
-	print(password)
-
 	if (username != "" and email != "" and password != ""):
 		db = connect_db()
 		db.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, generate_password_hash(password)])
@@ -57,6 +64,18 @@ def add_user():
 		return redirect("/admin")
 	return redirect("/register")
 	
+@app.route("/add_post", methods=['POST'])
+def add_post():
+	user_id = session['user_id']
+	title = request.form.get('title', "")
+	content = request.form.get('content', "")
+
+	if (title != "" and content != ""):
+		db = connect_db()
+		db.execute('INSERT INTO posts (title, content, author) VALUES (?, ?, ?)', [title, content, user_id])
+		db.commit()
+		return redirect("/admin")
+	return redirect("/admin")
 
 @app.route("/auth", methods=['POST'])
 def auth():
@@ -70,17 +89,19 @@ def auth():
 	if (len(users) > 0):
 		user = users[0]
 		if (check_password_hash(user[3], password)):
+			session['logged_in'] = True
+			session['user_id'] = user[0]
 			session['username'] = username
-			print(username)
-			print(str(session))
 			return redirect("/admin")
 	
 	return redirect("/admin")
 
 @app.route('/logout')
 def logout():
-   session.pop('username', None)
-   return redirect("/admin")
+	session.pop('logged_in', None)
+	session.pop('user_id', None)
+	session.pop('username', None)
+	return redirect("/admin")
  
 if __name__ == "__main__":
 	init()
