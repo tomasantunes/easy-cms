@@ -35,7 +35,12 @@ def init():
  
 @app.route("/")
 def home():
-	return "Hello World!"
+	db = connect_db()
+	c = db.execute('SELECT * FROM posts')
+	posts = c.fetchall()
+	print(str(posts))
+		
+	return render_template("home.html", posts=posts)
 
 @app.route("/admin")
 def admin():
