@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, session, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
+import datetime
 
 def connect_db():
 	return sqlite3.connect("easy_cms.db")
@@ -37,8 +38,17 @@ def init():
 def home():
 	db = connect_db()
 	c = db.execute('SELECT * FROM posts')
-	posts = c.fetchall()
+	rows = c.fetchall()
+	posts = []
 	print(str(posts))
+	for row in rows:
+		post = {
+			'title': row[1],
+			'content' : row[2],
+			'author' : row[3],
+			'date' : datetime.datetime.strptime(row[4], '%Y-%m-%d %H:%M:%S.%f').strftime('%Y-%m-%d')
+		}
+		posts.append(post)
 		
 	return render_template("home.html", posts=posts)
 
@@ -75,9 +85,11 @@ def add_post():
 	title = request.form.get('title', "")
 	content = request.form.get('content', "")
 
+	date = datetime.datetime.now()
+
 	if (title != "" and content != ""):
 		db = connect_db()
-		db.execute('INSERT INTO posts (title, content, author) VALUES (?, ?, ?)', [title, content, user_id])
+		db.execute('INSERT INTO posts (title, content, author, date) VALUES (?, ?, ?, ?)', [title, content, user_id, date])
 		db.commit()
 		return redirect("/admin")
 	return redirect("/admin")
