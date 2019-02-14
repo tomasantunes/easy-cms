@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect
+from flask import Flask, render_template, request, jsonify, session, redirect, Markup
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import datetime
@@ -44,7 +44,7 @@ def home():
 	for row in rows:
 		post = {
 			'title': row[1],
-			'content' : row[2],
+			'content' : Markup(row[2]),
 			'author' : row[3],
 			'date' : datetime.datetime.strptime(row[4], '%Y-%m-%d %H:%M:%S.%f').strftime('%Y-%m-%d')
 		}

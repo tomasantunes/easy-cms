@@ -12,10 +12,6 @@
 			width: 25%;
 		}
 
-		.register {
-			width: 25%;
-		}
-
 		.table {
 			width: 75%;
 		}
@@ -39,7 +35,7 @@
 					<h5>Title</h5>
 					<input id="title-input" type="text" name="title">
 					<h5>Text</h5>
-					<textarea id="content-input" type="text" name="content" rows="30" cols="30"></textarea>
+					<textarea id="content-input" name="content"></textarea>
 					<br>
 					<div class="row" style="text-align: center;">
 						<button type="submit" id="save-btn">Save</button>
@@ -59,7 +55,22 @@
 	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
-	<script>
-	</script>
+	<script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
+  	<script>
+  		tinymce.init({
+  			selector:'#content-input',
+  			resize: false,
+  			toolbar: [
+				'undo redo | styleselect | bold italic | link image',
+				'alignleft aligncenter alignright'
+			],
+			menu: {
+				view: {title: 'Edit', items: 'cut, copy, paste'}
+			},
+			toolbar_items_size : 'small',
+			branding: false,
+			height: 600,
+  		});
+  	</script>
 </body>
 </html>
