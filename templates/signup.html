@@ -22,8 +22,11 @@
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
-	  <a href="/admin">Login</a>
-	  <a href="/register" class="active">Register</a>
+	  <a href="/">Home</a>
+	  <a href="/login">Login</a>
+	  <a href="/signup" class="active">Sign up</a>
+	  <a href="/admin">Admin</a>
+	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
 	    <i class="fa fa-bars"></i>
 	  </a>
@@ -32,7 +35,7 @@
 		<div class="row">
 			<div class="register">
 				<form action="/add_user" method="post">
-					<h2>Register</h2>
+					<h2>Sign up</h2>
 					<label>Username</label>
 					<input id="register-user-input" type="text" name="username">
 					<label>E-Mail</label>

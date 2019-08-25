@@ -33,6 +33,12 @@ def init():
 						); """
 
 	c.execute(sql_posts_table)
+
+def getUserById(id):
+	db = connect_db()
+	c = db.execute('SELECT * FROM users WHERE id = ?', [id])
+	rows = c.fetchall()
+	return rows[0][1]
  
 @app.route("/")
 def home():
@@ -45,7 +51,7 @@ def home():
 		post = {
 			'title': row[1],
 			'content' : Markup(row[2]),
-			'author' : row[3],
+			'author' : getUserById(row[3]),
 			'date' : datetime.datetime.strptime(row[4], '%Y-%m-%d %H:%M:%S.%f').strftime('%Y-%m-%d')
 		}
 		posts.append(post)
@@ -62,9 +68,9 @@ def admin():
 	else:
 		return render_template("login.html")
 
-@app.route("/register")
+@app.route("/signup")
 def register():
-	return render_template("register.html")
+	return render_template("signup.html")
 
 @app.route("/add_user", methods=['POST'])
 def add_user():
