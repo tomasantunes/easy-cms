@@ -16,27 +16,17 @@
 			width: 25%;
 		}
 
-		.post {
-			background-color: #ccc;
-			border-radius: 10px;
-			padding: 25px;
-		}
-
 		.table {
 			width: 75%;
-		}
-
-		.feed {
-			width: 100%;
 		}
 	</style>
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
 	  <a href="/" class="active">Home</a>
-	  <a href="/login">Login</a>
-	  <a href="/signup">Sign up</a>
 	  <a href="/admin">Admin</a>
+	  <a href="/login">Login</a>
+	  <a href="/register">Register</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
 	    <i class="fa fa-bars"></i>
@@ -44,16 +34,26 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="feed">
+			<div class="register">
 				<form action="/add_post" method="post">
 					<h2>Home</h2>
 					{% for post in posts %}
-						<div class="post">
-							<h2>{{ post.title }}</h2>
-							<small>{{ post.author }}</small>
-							<small>{{ post.date }}</small>
-						    <p> {{ post.content }} </p>
-						</div>
+						<h2>{{ post.title }}</h2>
+						<small>{{ post.date }}</small>
+					    <p> {{ post.content }} </p>
+					    {% for c in post.comments %}
+							<div class="comment">
+								<p>{{ c.content }}</p>
+							</div>
+					    {% endfor %}
+					    <form action="/add-comment" method="post">
+							<textarea id="comment-input"></textarea>
+							<input type="hidden" id="post-id" value="{{ post.id }}">
+							<br>
+							<div class="row" style="text-align: center;">
+								<button type="submit" id="save-btn">Save</button>
+							</div>
+					    </form>
 					{% endfor %}
 				</form>
 			</div>
@@ -68,6 +68,33 @@
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
 	<script>
+		$("#save-btn").click(function(e) {
+			e.preventDefault();
+
+			var fd = new FormData();
+			var content = $( "#comment-input").val(); 
+			fd.append('content', content);
+			fd.append('post-id', $("#post-id").val());
+
+			console.log($("#post-id").val());
+
+			$.ajax({
+			    type: 'POST',
+			    url: '/add-comment',
+			    data: fd,
+			    contentType: false,
+			    cache: false,
+			    processData: false,
+			    async: false,
+			    success: function(data) {
+			        alert(data);
+			    },
+			    failure: function(data){
+			        alert(data);
+			    }
+			});
+		});
+
 	</script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>EasyCMS</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome/css/all.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/easy.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
@@ -15,14 +16,24 @@
 		.table {
 			width: 75%;
 		}
+
+		#avatar-preview {
+			width: 100px;
+			height: 100px;
+		}
+
+		#avatar-preview img {
+			width: 100%;
+			height: 100%;
+		}
 	</style>
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
 	  <a href="/">Home</a>
-	  <a href="/login">Login</a>
-	  <a href="/signup">Sign up</a>
-	  <a href="/admin" class="active">Admin</a>
+	  <a href="/admin"class="active">Admin</a>
+	  <a href="/Login">Login</a>
+	  <a href="/register">Register</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
 	    <i class="fa fa-bars"></i>
@@ -31,10 +42,19 @@
 	<div class="container">
 		<div class="row">
 			<div class="register">
-				<form action="/add_post" method="post">
-					<h2>Admin</h2>
-					<h5>Username</h5>
-					<p>{{ data.username }}</p>
+				<h2>Admin</h2>
+				<h5>Username</h5>
+				<p>{{ data.username }}</p>
+
+				<form method=POST enctype=multipart/form-data>
+					<div id="avatar-preview">
+						<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
+					</div>
+					<input type="file" id="file" name="file">
+					<button type="button" id="upload-avatar">Upload</button>
+				</form>
+				<form action="/add-post" method="post">
+					
 					<h5>Title</h5>
 					<input id="title-input" type="text" name="title">
 					<h5>Text</h5>
@@ -56,6 +76,7 @@
 		</div>
 	</div>
 	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
 	<script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
@@ -74,6 +95,43 @@
 			branding: false,
 			height: 600,
   		});
+
+  		function setAvatar(path) {
+  			$("#avatar-img").attr("src", path);
+  		}
+
+  		$("#upload-avatar").click(function(e) {
+			e.preventDefault();
+
+			var fd = new FormData();
+			var temp_file = $( '#file' )[0].files[0]; 
+			fd.append('file', $( '#file' )[0].files[0]);
+
+		    var reader = new FileReader();
+		    reader.onload = function(){
+		        document.getElementById('avatar-img').src = this.result;
+		        console.log("x1");
+		    };
+		    reader.readAsDataURL(temp_file);
+		    console.log(reader.result);
+		    document.getElementById('avatar-img').src = reader.result;
+
+			$.ajax({
+			    type: 'POST',
+			    url: '/upload',
+			    data: fd,
+			    contentType: false,
+			    cache: false,
+			    processData: false,
+			    async: false,
+			    success: function(data) {
+			        alert(data);
+			    },
+			    failure: function(data){
+			        alert(data);
+			    }
+			});
+		});
   	</script>
 </body>
 </html>

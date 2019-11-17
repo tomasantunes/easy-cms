@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/form-style1.css') }}">
 	<style>
-		.login {
+		.register {
 			width: 25%;
 			padding: 15px;
 			background-color: #ccc;
@@ -24,28 +24,31 @@
 	<div class="top-nav" id="top-nav1">
 	  <a href="/">Home</a>
 	  <a href="/admin">Admin</a>
-	  <a href="/login" class="active">Login</a>
-	  <a href="/register">Register</a>
+	  <a href="/login">Login</a>
+	  <a href="/register" class="active">Register</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
-	    <i class="fa fa-bars"></i>
+		<i class="fa fa-bars"></i>
 	  </a>
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="login">
-				<form action="/auth" method = "post">
-					<h2>Login</h2>
+			<div class="register">
+				<form action="/add_user" method="post">
+					<h2>Register</h2>
+					
 					<label>Username</label>
-					<input id="login-user-input" type="text" name="username">
+					<input id="register-user-input" type="text" name="username">
+					<label>E-Mail</label>
+					<input id="register-email-input" type="text" name="email">
 					<label>Password</label>
-					<input id="login-password-input" type="password" name="password">
+					<input id="register-password-input" type="password" name="password">
 					<br>
 					<div class="row" style="text-align: center;">
-						<button type="submit" id="login-btn">OK</button>
+						<button type="submit" id="register-btn">Submit</button>
 					</div>
 					<div class="row" style="text-align: center;">
-						<a href="/register">Register</a>
+						<a href="/admin">Login</a>
 					</div>
 				</form>
 			</div>
@@ -60,6 +63,7 @@
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
 	<script>
+		
 	</script>
 </body>
 </html>

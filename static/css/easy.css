@@ -75,7 +75,7 @@ button {
 .top-nav a {
   float: left;
   display: block;
-  color: #f2f2f2;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -85,6 +85,10 @@ button {
 .top-nav a:hover {
   background-color: #ddd;
   color: black;
+}
+
+.top-nav a:visited {
+  color: white;
 }
 
 .active {
@@ -103,6 +107,12 @@ button {
 
 .contact-div {
   padding: 15px;
+}
+
+.contact-div {
+  padding: 15px;
+  border: 1px solid #AAA;
+  border-radius: 5px;
 }
 
 .author-avatar {
