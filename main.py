@@ -141,9 +141,12 @@ def admin():
 		c = db.execute('SELECT * FROM users WHERE id = ?', [user_id])
 		rows = c.fetchall()
 		print(rows)
-		username = session['username']
-		data = {'username': username, 'avatar': rows[0][3]}
-		return render_template("admin.html", data=data)
+		if len(rows) > 0:
+			username = session['username']
+			data = {'username': username, 'avatar': rows[0][3]}
+			return render_template("admin.html", data=data)
+		else:
+			return redirect("/login")
 	else:
 		return redirect("/login")
 		
