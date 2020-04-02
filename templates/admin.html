@@ -32,7 +32,7 @@
 	<div class="top-nav" id="top-nav1">
 	  <a href="/">Home</a>
 	  <a href="/admin"class="active">Admin</a>
-	  <a href="/Login">Login</a>
+	  <a href="/login">Login</a>
 	  <a href="/register">Register</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
@@ -41,7 +41,7 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="register">
+			<div>
 				<h2>Admin</h2>
 				<h5>Username</h5>
 				<p>{{ data.username }}</p>
@@ -54,17 +54,13 @@
 					<button type="button" id="upload-avatar">Upload</button>
 				</form>
 				<form action="/add-post" method="post">
-					
 					<h5>Title</h5>
 					<input id="title-input" type="text" name="title">
 					<h5>Text</h5>
-					<textarea id="content-input" name="content"></textarea>
+					<textarea id="content-input" name="content" rows="20" cols="50"></textarea>
 					<br>
-					<div class="row" style="text-align: center;">
+					<div style="text-align: right;">
 						<button type="submit" id="save-btn">Save</button>
-					</div>
-					<div class="row" style="text-align: center;">
-						<a href="/logout">Logout</a>
 					</div>
 				</form>
 			</div>
