@@ -6,7 +6,6 @@ Work In Progress
 
 - Add style to front page
 - Add style to admin page
-- Replace post editor
 
 ### How to run
 
