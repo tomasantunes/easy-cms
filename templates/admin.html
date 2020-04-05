@@ -18,13 +18,29 @@
 		}
 
 		#avatar-preview {
-			width: 100px;
-			height: 100px;
+			width: 50px;
+			height: 50px;
 		}
 
 		#avatar-preview img {
 			width: 100%;
 			height: 100%;
+		}
+
+		.profile {
+			height: 200px;
+			background-color: #BBB;
+			padding: 15px;
+		}
+
+		.post-editor {
+			border: 3px solid #BBB;
+			padding: 15px;
+		}
+
+		#file {
+			width: 50%;
+			height: 38px;
 		}
 	</style>
 </head>
@@ -42,27 +58,31 @@
 	<div class="container">
 		<div class="row">
 			<div>
-				<h2>Admin</h2>
-				<h5>Username</h5>
-				<p>{{ data.username }}</p>
+				<div class="profile">
+					<h4>Admin</h4>
+					
 
-				<form method=POST enctype=multipart/form-data>
-					<div id="avatar-preview">
-						<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
-					</div>
-					<input type="file" id="file" name="file">
-					<button type="button" id="upload-avatar">Upload</button>
-				</form>
-				<form action="/add-post" method="post">
-					<h5>Title</h5>
-					<input id="title-input" type="text" name="title">
-					<h5>Text</h5>
-					<textarea id="content-input" name="content" rows="20" cols="50"></textarea>
-					<br>
-					<div style="text-align: right;">
-						<button type="submit" id="save-btn">Save</button>
-					</div>
-				</form>
+					<form method=POST enctype=multipart/form-data>
+						<div id="avatar-preview">
+							<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
+						</div>
+						<input type="file" id="file" name="file">
+						<button type="button" id="upload-avatar">Upload</button>
+						<p><b>Username: </b>{{ data.username }}</p>
+					</form>
+				</div>
+				<div class="post-editor">
+					<form action="/add-post" method="post">
+						<h5>Title</h5>
+						<input id="title-input" type="text" name="title">
+						<h5>Text</h5>
+						<textarea id="content-input" name="content" rows="20" cols="50"></textarea>
+						<br>
+						<div style="text-align: right;">
+							<button type="submit" id="save-btn">Save</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
