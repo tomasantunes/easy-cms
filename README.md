@@ -2,6 +2,12 @@
 
 Work In Progress
 
+### Roadmap
+
+- Add style to front page
+- Add style to admin page
+- Replace post editor
+
 ### How to run
 
 ```

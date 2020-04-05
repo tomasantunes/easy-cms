@@ -39,19 +39,20 @@
 					<h2>Home</h2>
 					{% for post in posts %}
 						<h2>{{ post.title }}</h2>
+						<small>{{ post.author }}</small>
 						<small>{{ post.date }}</small>
 					    <p> {{ post.content }} </p>
 					    {% for c in post.comments %}
 							<div class="comment">
-								<p>{{ c.content }}</p>
+								<p><b><span>{{ c.author }}: </span></b>{{ c.content }}</p>
 							</div>
 					    {% endfor %}
 					    <form action="/add-comment" method="post">
-							<textarea id="comment-input"></textarea>
-							<input type="hidden" id="post-id" value="{{ post.id }}">
+							<textarea id="comment-input" name="content"></textarea>
+							<input type="hidden" id="post-id" name="post-id" value="{{ post.id }}">
 							<br>
 							<div class="row" style="text-align: center;">
-								<button type="submit" id="save-btn">Save</button>
+								<button type="button" id="save-btn">Save</button>
 							</div>
 					    </form>
 					{% endfor %}
@@ -76,8 +77,6 @@
 			fd.append('content', content);
 			fd.append('post-id', $("#post-id").val());
 
-			console.log($("#post-id").val());
-
 			$.ajax({
 			    type: 'POST',
 			    url: '/add-comment',
@@ -87,7 +86,7 @@
 			    processData: false,
 			    async: false,
 			    success: function(data) {
-			        alert(data);
+
 			    },
 			    failure: function(data){
 			        alert(data);

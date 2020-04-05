@@ -57,8 +57,6 @@ def upload_avatar():
 
 			user_id = session['user_id']
 
-			print("x3")
-
 			if (user_id):
 				db = connect_db()
 				db.execute('UPDATE users SET avatar = ? WHERE id = ?', [path, user_id])
@@ -68,7 +66,7 @@ def upload_avatar():
 
 def init():
 	sql_users_table = """ CREATE TABLE IF NOT EXISTS users (
-							id integer PRIMARY KEY,
+							id integer PRIMARY KEY AUTOINCREMENT,
 							username text NOT NULL,
 							email text NOT NULL,
 							password text NOT NULL,
@@ -79,7 +77,7 @@ def init():
 	c.execute(sql_users_table)
 
 	sql_posts_table = """ CREATE TABLE IF NOT EXISTS posts (
-							id integer PRIMARY KEY,
+							id integer PRIMARY KEY AUTOINCREMENT,
 							title text,
 							content text,
 							author integer,
@@ -89,10 +87,10 @@ def init():
 	c.execute(sql_posts_table)
 
 	sql_comments_table = """ CREATE TABLE IF NOT EXISTS comments (
-							id integer PRIMARY KEY,
+							id integer PRIMARY KEY AUTOINCREMENT,
 							post_id integer,
 							content text,
-							author integer,
+							author text,
 							date date
 						); """
 
@@ -106,20 +104,27 @@ def home():
 	posts = []
 
 	for row in rows:
+		c = db.execute('SELECT * FROM users WHERE id = ?', [row[3]])
+		rows = c.fetchall()
+		author = rows[0][1]
 		post = {
+			'id': row[0],
 			'title': row[1],
 			'content' : Markup(row[2]),
-			'author' : row[3],
+			'author' : author,
 			'date' : datetime.datetime.strptime(row[4], '%Y-%m-%d %H:%M:%S.%f').strftime('%Y-%m-%d'),
 			'comments' : [],
 		}
 
-		db = connect_db()
 		c = db.execute('SELECT * FROM comments INNER JOIN posts on posts.id = comments.post_id;')
 		comments = c.fetchall()
 
 		for c in comments:
-			post.comments.append(c)
+			comment = {
+				'content': c[2],
+				'author': c[3]
+			}
+			post['comments'].append(comment)
 
 		posts.append(post)
 
@@ -198,9 +203,6 @@ def add_comment():
 	content = request.form.get('content', "")
 
 	date = datetime.datetime.now()
-
-	print(post_id)
-	print(content)
 
 	if (post_id != "" and content != ""):
 		db = connect_db()
