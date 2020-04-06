@@ -19,6 +19,16 @@
 		.table {
 			width: 75%;
 		}
+
+		.comment-form {
+			background-color: #CCC;
+			border-radius: 4px;
+			padding: 10px;
+		}
+
+		#comment-input {
+			width: 100%;
+		}
 	</style>
 </head>
 <body>
@@ -35,7 +45,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="register">
-				<form action="/add_post" method="post">
 					<h2>Home</h2>
 					{% for post in posts %}
 						<h2>{{ post.title }}</h2>
@@ -47,7 +56,7 @@
 								<p><b><span>{{ c.author }}: </span></b>{{ c.content }}</p>
 							</div>
 					    {% endfor %}
-					    <form action="/add-comment" method="post">
+					    <form action="/add-comment" method="post" class="comment-form">
 							<textarea id="comment-input" name="content"></textarea>
 							<input type="hidden" id="post-id" name="post-id" value="{{ post.id }}">
 							<br>
@@ -56,7 +65,6 @@
 							</div>
 					    </form>
 					{% endfor %}
-				</form>
 			</div>
 		</div>
 	</div>
@@ -86,7 +94,7 @@
 			    processData: false,
 			    async: false,
 			    success: function(data) {
-
+					location.reload();
 			    },
 			    failure: function(data){
 			        alert(data);
