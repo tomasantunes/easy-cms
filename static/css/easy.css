@@ -168,6 +168,60 @@ a:visited {
   text-decoration: none;
 }
 
+.login {
+  width: 25%;
+  padding: 15px;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+.aignup {
+  width: 25%;
+  padding: 15px;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+.table {
+  width: 75%;
+}
+
+.comment-form {
+  background-color: #CCC;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+#comment-input {
+  width: 100%;
+}
+
+#avatar-preview {
+  width: 50px;
+  height: 50px;
+}
+
+#avatar-preview img {
+  width: 100%;
+  height: 100%;
+}
+
+.profile {
+  height: 200px;
+  background-color: #BBB;
+  padding: 15px;
+}
+
+.post-editor {
+  border: 3px solid #BBB;
+  padding: 15px;
+}
+
+#file {
+  width: 50%;
+  height: 38px;
+}
+
 @media screen and (max-width: 600px) {
   .top-nav a:not(:first-child) {display: none;}
   .top-nav a.icon {

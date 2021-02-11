@@ -1,31 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>EasyCMS</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome/css/all.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/easy.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/form-style1.css') }}">
-	<style>
-		.register {
-			width: 25%;
-			padding: 15px;
-			background-color: #ccc;
-			border-radius: 10px;
-		}
-
-		.table {
-			width: 75%;
-		}
-	</style>
+	{% include 'header.html' %}
+	{% block header %}
+	{% endblock %}
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
 	  <a href="/">Home</a>
+	  <a href="/admin">Admin</a>
 	  <a href="/login">Login</a>
 	  <a href="/signup" class="active">Sign up</a>
-	  <a href="/admin">Admin</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
 	    <i class="fa fa-bars"></i>
@@ -33,7 +18,7 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="register">
+			<div class="signup">
 				<form action="/add_user" method="post">
 					<h2>Sign up</h2>
 					<label>Username</label>

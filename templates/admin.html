@@ -1,55 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>EasyCMS</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome/css/all.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/easy.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/form-style1.css') }}">
-	<style>
-		.login {
-			width: 25%;
-		}
-
-		.table {
-			width: 75%;
-		}
-
-		#avatar-preview {
-			width: 50px;
-			height: 50px;
-		}
-
-		#avatar-preview img {
-			width: 100%;
-			height: 100%;
-		}
-
-		.profile {
-			height: 200px;
-			background-color: #BBB;
-			padding: 15px;
-		}
-
-		.post-editor {
-			border: 3px solid #BBB;
-			padding: 15px;
-		}
-
-		#file {
-			width: 50%;
-			height: 38px;
-		}
-	</style>
+	{% include 'header.html' %}
+	{% block header %}
+	{% endblock %}
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
 	  <a href="/">Home</a>
 	  <a href="/admin"class="active">Admin</a>
 	  <a href="/login">Login</a>
-	  <a href="/register">Register</a>
+	  <a href="/signup">Sign Up</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
 	    <i class="fa fa-bars"></i>

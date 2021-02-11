@@ -130,6 +130,10 @@ def home():
 
 	return render_template("home.html", posts=posts)
 
+@app.route('/header')
+def header():
+    return render_template("header.html")
+
 @app.route("/get-user")
 def get_user():
 	user_id = session['user_id']
@@ -160,9 +164,9 @@ def admin():
 def login():
 	return render_template("login.html")
 
-@app.route("/register")
+@app.route("/signup")
 def register():
-	return render_template("register.html")
+	return render_template("signup.html")
 
 def insert_user(username, email, password, avatar):
 	db = connect_db()
@@ -226,9 +230,9 @@ def auth():
 			session['logged_in'] = True
 			session['user_id'] = user[0]
 			session['username'] = username
-			return redirect("/admin")
+			return jsonify({"error": 0})
 	
-	return redirect("/admin")
+	return jsonify({"error": 1})
 
 @app.route('/logout')
 def logout():

@@ -1,31 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>EasyCMS</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='fonts/fontawesome/css/all.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/easy.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-date-picker.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/form-style1.css') }}">
-	<style>
-		.login {
-			width: 25%;
-			padding: 15px;
-			background-color: #ccc;
-			border-radius: 10px;
-		}
-
-		.table {
-			width: 75%;
-		}
-	</style>
+	{% include 'header.html' %}
+	{% block header %}
+	{% endblock %}
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
 	  <a href="/">Home</a>
 	  <a href="/admin">Admin</a>
 	  <a href="/login" class="active">Login</a>
-	  <a href="/register">Register</a>
+	  <a href="/signup">Sign Up</a>
 	  <a href="/logout">Logout</a>
 	  <a href="javascript:void(0);" class="icon" onclick="toggleMenu()">
 	    <i class="fa fa-bars"></i>
@@ -42,10 +27,10 @@
 					<input id="login-password-input" type="password" name="password">
 					<br>
 					<div class="row" style="text-align: center;">
-						<button type="submit" id="login-btn">OK</button>
+						<button id="login-btn">OK</button>
 					</div>
 					<div class="row" style="text-align: center;">
-						<a href="/register">Register</a>
+						<a href="/signup">Sign Up</a>
 					</div>
 				</form>
 			</div>
@@ -59,7 +44,44 @@
 	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 	<script>
+		$("#login-btn").click(function(e) {
+			e.preventDefault();
+
+			var fd = new FormData();
+			var user = $( "#login-user-input").val();
+			var pass = $( "#login-password-input").val(); 
+			fd.append('username', user);
+			fd.append('password', pass);
+
+			$.ajax({
+			    type: 'POST',
+			    url: '/auth',
+			    data: fd,
+			    contentType: false,
+			    cache: false,
+			    processData: false,
+			    async: false,
+			    success: function(data) {
+					console.log(data);
+					if (data['error'] == 1) {
+						Swal.fire({
+							title: 'Error!',
+							text: '',
+							icon: 'error',
+							confirmButtonText: 'OK'
+						});
+					}
+					else if (data['error'] == 0) {
+						location.href = '/admin';
+					}
+			    },
+			    failure: function(data) {
+					console.log("Error!");
+			    }
+			});
+		});
 	</script>
 </body>
 </html>
