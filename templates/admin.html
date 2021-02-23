@@ -20,17 +20,20 @@
 		<div class="row">
 			<div>
 				<div class="profile">
-					<h4>Admin</h4>
-					
-
-					<form method=POST enctype=multipart/form-data>
-						<div id="avatar-preview">
-							<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
-						</div>
-						<input type="file" id="file" name="file">
-						<button type="button" id="upload-avatar">Upload</button>
-						<p><b>Username: </b>{{ data.username }}</p>
-					</form>
+					<h2>Admin</h2>
+					<p><b>Username: </b>{{ data.username }}</p>
+					<div class="avatar">
+						<h5>Avatar</h5>
+						<form method=POST enctype=multipart/form-data>
+							<div id="avatar-preview">
+								<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
+							</div>
+							<input type="file" id="file" name="file">
+							<div>
+								<button type="button" id="upload-avatar">Upload</button>
+							</div>
+						</form>
+					</div>
 				</div>
 				<div class="post-editor">
 					<form action="/add-post" method="post">
@@ -71,11 +74,11 @@
 			toolbar_items_size : 'small',
 			branding: false,
 			height: 600,
-  		});
+		  });
 
   		function setAvatar(path) {
   			$("#avatar-img").attr("src", path);
-  		}
+		  }
 
   		$("#upload-avatar").click(function(e) {
 			e.preventDefault();
