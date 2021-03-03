@@ -22,6 +22,7 @@
 				<div class="profile">
 					<h2>Admin</h2>
 					<p><b>Username: </b><span data-bind="text: username"></span></p>
+					<p><b>Page Views: </b><span data-bind="text: views"></span></p>
 					<div class="avatar">
 						<h5>Avatar</h5>
 						<form method=POST enctype=multipart/form-data>
@@ -118,11 +119,16 @@
 		function AppModelView() {
 			var self = this;
 			self.username = ko.observable();
+			self.views = ko.observable();
 
 			self.init = function() {
 				$.getJSON("/get-user")
 				.done(function(data) {
 					self.username(data[0][1]);
+				});
+				$.getJSON("/get-views")
+				.done(function(data) {
+					self.views(data[0][0]);
 				});
 			}
 			self.init();

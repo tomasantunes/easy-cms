@@ -96,6 +96,14 @@ def init():
 
 	c.execute(sql_comments_table)
 
+	sql_views_table = """ CREATE TABLE IF NOT EXISTS views (
+							id integer PRIMARY KEY AUTOINCREMENT,
+							page text,
+							date date
+						); """
+
+	c.execute(sql_views_table)
+
 @app.route("/")
 def home():
 	db = connect_db()
@@ -158,7 +166,22 @@ def admin():
 			return redirect("/login")
 	else:
 		return redirect("/login")
-		
+
+@app.route("/increment-view", methods=['POST'])
+def incrementView():
+	page = request.form.get('page', "/")
+	date = datetime.datetime.now()
+	db = connect_db()
+	db.execute('INSERT INTO views (page, date) VALUES (?, ?)', [page, date])
+	db.commit()
+	return "OK"
+
+@app.route("/get-views")
+def get_views():
+	db = connect_db()
+	c = db.execute('SELECT COUNT(*) FROM views')
+	rows = c.fetchall()
+	return jsonify(rows)
 
 @app.route("/login")
 def login():

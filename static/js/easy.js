@@ -6,3 +6,5 @@ function toggleMenu() {
         x.className = "top-nav";
     }
 }
+
+$.post("/increment-view", {page: window.location.pathname});
