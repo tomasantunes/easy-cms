@@ -16,12 +16,12 @@
 	    <i class="fa fa-bars"></i>
 	  </a>
 	</div>
-	<div class="container">
+	<div class="container" id="app">
 		<div class="row">
 			<div>
 				<div class="profile">
 					<h2>Admin</h2>
-					<p><b>Username: </b>{{ data.username }}</p>
+					<p><b>Username: </b><span data-bind="text: username"></span></p>
 					<div class="avatar">
 						<h5>Avatar</h5>
 						<form method=POST enctype=multipart/form-data>
@@ -58,6 +58,7 @@
 	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/knockout.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tinymce/tinymce.min.js') }}"></script>
   	<script>
@@ -112,6 +113,21 @@
 			    }
 			});
 		});
+
+		function AppModelView() {
+			var self = this;
+			self.username = ko.observable();
+
+			self.init = function() {
+				$.getJSON("/get-user")
+				.done(function(data) {
+					self.username(data[0][1]);
+				});
+			}
+			self.init();
+		}
+
+		ko.applyBindings(new AppModelView(), document.getElementById("app"));
   	</script>
 </body>
 </html>
