@@ -27,7 +27,19 @@
 					    <p> {{ post.content }} </p>
 					    {% for c in post.comments %}
 							<div class="comment">
-								<p><b><span>{{ c.author }}: </span></b>{{ c.content }}</p>
+								<div class="comment-vote">
+									<div style="float:left">
+										<i class="fa fa-angle-up fa-lg" id="upvote-btn"></i><br>
+										<i class="fa fa-angle-down fa-lg" id="downvote-btn"></i>
+									</div>
+									<div style="float:left; padding: 8px">
+										<span>{{ c.votes }}</span>
+									</div>
+								</div>
+								<div class="comment-content">
+									<b><span>{{ c.author }}: </span></b>{{ c.content }}
+								</div>
+								<div class="clearfix"></div>
 							</div>
 					    {% endfor %}
 					    <form action="/add-comment" method="post" class="comment-form">
@@ -48,6 +60,7 @@
 		</div>
 	</div>
 	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/knockout.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/sweetalert2.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/tiny-date-picker.min.js') }}"></script>

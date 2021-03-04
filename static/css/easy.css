@@ -235,6 +235,20 @@ a:visited {
   margin: 0;
 }
 
+.comment {
+  padding: 5px;
+  background-color: #ccc;
+  margin-bottom: 10px;
+}
+
+.comment-vote {
+  float: left;
+}
+
+.comment-content {
+  float: left;
+}
+
 @media screen and (max-width: 600px) {
   .top-nav a:not(:first-child) {display: none;}
   .top-nav a.icon {

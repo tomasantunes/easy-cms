@@ -91,6 +91,7 @@ def init():
 							post_id integer,
 							content text,
 							author text,
+							votes integer,
 							date date
 						); """
 
@@ -129,6 +130,7 @@ def home():
 
 		for c in comments:
 			comment = {
+				'id': c[0],
 				'content': c[2],
 				'author': c[3]
 			}
