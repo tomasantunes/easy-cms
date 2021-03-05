@@ -90,6 +90,9 @@
 					$.each(p.comments, function(i, val) {
 						pm.comments.push(new self.CommentModel(val));
 					});
+					pm.comments.sort(function(a, b) {  
+						return b.votes() - a.votes(); 
+					});  
 				}
 
 				pm.addComment = function() {
