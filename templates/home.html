@@ -16,41 +16,42 @@
 	    <i class="fa fa-bars"></i>
 	  </a>
 	</div>
-	<div class="container">
+	<div class="container" id="app">
 		<div class="row">
 			<div>
 					<h2>Home</h2>
-					{% for post in posts %}
-						<h2>{{ post.title }}</h2>
-						<small>{{ post.author }}</small>
-						<small>{{ post.date }}</small>
-					    <p> {{ post.content }} </p>
-					    {% for c in post.comments %}
-							<div class="comment">
-								<div class="comment-vote">
-									<div style="float:left">
-										<i class="fa fa-angle-up fa-lg" id="upvote-btn"></i><br>
-										<i class="fa fa-angle-down fa-lg" id="downvote-btn"></i>
+					<div data-bind="foreach: posts">
+						<div>
+							<h2 data-bind="text: title"></h2>
+							<small data-bind="text: author"></small>
+							<small data-bind="text: date"></small>
+							<p data-bind="html: content"></p>
+							<div data-bind="foreach: comments">
+								<div class="comment">
+									<div class="comment-vote">
+										<div style="float:left">
+											<i class="fa fa-angle-up fa-lg vote" data-bind="click: upvote"></i><br>
+											<i class="fa fa-angle-down fa-lg vote" data-bind="click: downvote"></i>
+										</div>
+										<div style="float:left; padding: 8px">
+											<span data-bind="text: votes"></span>
+										</div>
 									</div>
-									<div style="float:left; padding: 8px">
-										<span>{{ c.votes }}</span>
+									<div class="comment-content">
+										<b><span data-bind="text: author"></span></b> <span data-bind="text: content"></span>
 									</div>
+									<div class="clearfix"></div>
 								</div>
-								<div class="comment-content">
-									<b><span>{{ c.author }}: </span></b>{{ c.content }}
+							</div>
+							<div class="comment-form">
+								<textarea id="comment-input" name="content" data-bind="textInput: newComment"></textarea>
+								<br>
+								<div class="row" style="text-align: center;">
+									<button type="button" class="save-btn" data-bind="click: addComment">Save</button>
 								</div>
-								<div class="clearfix"></div>
-							</div>
-					    {% endfor %}
-					    <form action="/add-comment" method="post" class="comment-form">
-							<textarea id="comment-input" name="content"></textarea>
-							<input type="hidden" id="post-id" name="post-id" value="{{ post.id }}">
-							<br>
-							<div class="row" style="text-align: center;">
-								<button type="button" id="save-btn">Save</button>
-							</div>
-					    </form>
-					{% endfor %}
+							</form>
+						</div>
+					</div>
 			</div>
 		</div>
 	</div>
@@ -68,27 +69,79 @@
 		$("#save-btn").click(function(e) {
 			e.preventDefault();
 
-			var fd = new FormData();
-			var content = $( "#comment-input").val(); 
-			fd.append('content', content);
-			fd.append('post-id', $("#post-id").val());
-
-			$.ajax({
-			    type: 'POST',
-			    url: '/add-comment',
-			    data: fd,
-			    contentType: false,
-			    cache: false,
-			    processData: false,
-			    async: false,
-			    success: function(data) {
-					location.reload();
-			    },
-			    failure: function(data){
-			        alert(data);
-			    }
-			});
+			
 		});
+
+		function AppModelView() {
+			var self = this;
+			self.posts = ko.observableArray();
+
+			self.PostModel = function(p) {
+				var pm = this;
+				pm.id = ko.observable(p.id);
+				pm.title = ko.observable(p.title);
+				pm.author = ko.observable(p.author);
+				pm.date = ko.observable(p.date);
+				pm.content = ko.observable(p.content);
+				pm.comments = ko.observableArray();
+				pm.newComment = ko.observable();
+
+				pm.init = function() {
+					$.each(p.comments, function(i, val) {
+						pm.comments.push(new self.CommentModel(val));
+					});
+				}
+
+				pm.addComment = function() {
+					$.post("/add-comment", {"post-id": pm.id(), "content": pm.newComment()})
+					.done(function() {
+						self.loadData();
+					});
+				}
+
+				pm.init();
+			}
+
+			self.CommentModel = function(c) {
+				var cm = this;
+				cm.id = ko.observable(c.id);
+				cm.author = ko.observable(c.author);
+				cm.content = ko.observable(c.content);
+				console.log(c.votes);
+				cm.votes = ko.observable(c.votes);
+
+				cm.upvote = function() {
+					$.post("/upvote", {"id": cm.id()})
+					.done(function() {
+						self.loadData();
+					});
+					
+				}
+
+				cm.downvote = function() {
+					$.post("/downvote", {"id": cm.id()})
+					.done(function() {
+						self.loadData();
+					});
+				}
+			};
+
+			self.loadData = function() {
+				self.posts.removeAll();
+				$.getJSON("/posts", function(data) {
+					$.each(data, function(i, val) {
+						self.posts.push(new self.PostModel(val));
+					});
+				});
+			};
+			
+			self.init = function() {
+				self.loadData();
+			};
+			self.init();
+		}
+
+		ko.applyBindings(new AppModelView(), document.getElementById("app"));
 
 	</script>
 </body>

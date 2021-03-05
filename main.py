@@ -91,7 +91,7 @@ def init():
 							post_id integer,
 							content text,
 							author text,
-							votes integer,
+							votes integer DEFAULT 0,
 							date date
 						); """
 
@@ -105,8 +105,7 @@ def init():
 
 	c.execute(sql_views_table)
 
-@app.route("/")
-def home():
+def getPosts():
 	db = connect_db()
 	c = db.execute('SELECT * FROM posts')
 	rows = c.fetchall()
@@ -132,13 +131,25 @@ def home():
 			comment = {
 				'id': c[0],
 				'content': c[2],
-				'author': c[3]
+				'author': c[3],
+				'votes': c[4]
 			}
 			post['comments'].append(comment)
 
 		posts.append(post)
 
+	return posts
+
+@app.route("/")
+def home():
+	posts = getPosts()
+	
 	return render_template("home.html", posts=posts)
+
+@app.route("/posts")
+def posts():
+	posts = getPosts()
+	return jsonify(posts)
 
 @app.route('/header')
 def header():
@@ -239,6 +250,24 @@ def add_comment():
 		db.commit()
 		return redirect("/")
 	return redirect("/")
+
+@app.route("/upvote", methods=['POST'])
+def upvote():
+	id = request.form.get('id', '')
+
+	db = connect_db()
+	db.execute('UPDATE comments SET votes = votes + 1 WHERE id = ?', [id])
+	db.commit()
+	return 'OK'
+
+@app.route("/downvote", methods=['POST'])
+def downvote():
+	id = request.form.get('id', '')
+
+	db = connect_db()
+	db.execute('UPDATE comments SET votes = votes -1 WHERE id = ?', [id])
+	db.commit()
+	return 'OK'
 
 @app.route("/auth", methods=['POST'])
 def auth():

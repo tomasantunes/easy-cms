@@ -249,6 +249,10 @@ a:visited {
   float: left;
 }
 
+.vote {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 600px) {
   .top-nav a:not(:first-child) {display: none;}
   .top-nav a.icon {
