@@ -7,6 +7,7 @@
 </head>
 <body>
 	<div class="top-nav" id="top-nav1">
+	  <a href="#menu-toggle" class="btn btn-info" id="menu-toggle"><img src="{{ url_for('static', filename='images/menu-icon.png') }}"></a>
 	  <a href="/">Home</a>
 	  <a href="/admin"class="active">Admin</a>
 	  <a href="/login">Login</a>
@@ -17,46 +18,67 @@
 	  </a>
 	</div>
 	<div class="container" id="app">
-		<div class="row">
-			<div>
-				<div class="profile">
-					<h2>Admin</h2>
-					<p><b>Username: </b><span data-bind="text: username"></span></p>
-					<p><b>Page Views: </b><span data-bind="text: views"></span></p>
-					<div class="avatar">
-						<h5>Avatar</h5>
-						<form method=POST enctype=multipart/form-data>
-							<div id="avatar-preview">
-								<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
-							</div>
-							<input type="file" id="file" name="file">
-							<div>
-								<button type="button" id="upload-avatar">Upload</button>
-							</div>
-						</form>
+		<div id="wrapper">
+			<div id="sidebar-wrapper">
+				<div id="sidebar-menu">
+					<div>
+						<a href="#">Page 1</a>
+					</div>
+					<div>
+						<a href="#">Page 2</a>
+					</div>
+					<div>
+						<a href="#">Page 3</a>
+					</div>
+					<div>
+						<a href="#">Page 4</a>
+					</div>
+					<div>
+						<a href="#">Page 5</a>
 					</div>
 				</div>
-				<div class="post-editor">
-					<h2>Create Post</h2>
-					<form action="/add-post" method="post">
-						<h5>Title</h5>
-						<input id="title-input" type="text" name="title">
-						<h5>Text</h5>
-						<textarea id="content-input" name="content" rows="20" cols="50"></textarea>
-						<br>
-						<div style="text-align: right;">
-							<button type="submit" id="save-btn">Save</button>
+			</div>
+			<div id="page-content-wrapper">
+				<div class="container-fluid">
+					<div class="row">
+						<div>
+							<div class="profile">
+								<h2>Admin</h2>
+								<p><b>Username: </b><span data-bind="text: username"></span></p>
+								<p><b>Page Views: </b><span data-bind="text: views"></span></p>
+								<div class="avatar">
+									<h5>Avatar</h5>
+									<form method=POST enctype=multipart/form-data>
+										<div id="avatar-preview">
+											<img id="avatar-img" src="{{ url_for('static', filename='images/default-user.png') }}">
+										</div>
+										<input type="file" id="file" name="file">
+										<div>
+											<button type="button" id="upload-avatar">Upload</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="post-editor">
+								<h2>Create Post</h2>
+								<form action="/add-post" method="post">
+									<h5>Title</h5>
+									<input id="title-input" type="text" name="title">
+									<h5>Text</h5>
+									<textarea id="content-input" name="content" rows="20" cols="50"></textarea>
+									<br>
+									<div style="text-align: right;">
+										<button type="submit" id="save-btn">Save</button>
+									</div>
+								</form>
+							</div>
 						</div>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="container">
-		<div class="row">
 
-		</div>
-	</div>
 	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/easy.js') }}"></script>
@@ -78,6 +100,11 @@
 			branding: false,
 			height: 600,
 		  });
+
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
 
   		function setAvatar(path) {
   			$("#avatar-img").attr("src", path);
